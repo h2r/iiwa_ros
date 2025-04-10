@@ -32,10 +32,11 @@
 
   <!-- Select the controller -->
   <arg name="controller" default="PositionTrajectoryController"/>
+  <!-- <arg name="controller" default="TorqueController"/> -->
 
   <group ns="dorfl/iiwa_left">
     <!-- Setup iiwa -->
-    <include file="$(find iiwa_driver)/launch/iiwa_setup.launch">
+    <include file="$(find iiwa_driver)/launch/iiwa_left_setup.launch">
         <arg name="robot_name" value="$(arg robot_name)"/>
         <arg name="model" value="$(arg model)"/>
         <arg name="controller" value="$(arg controller)"/>

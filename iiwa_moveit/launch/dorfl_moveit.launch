@@ -25,29 +25,15 @@
     <remap from="/move_group/fake_controller_joint_states" to="/$(arg robot_name)/move_group/fake_controller_joint_states" />
     <remap from="/get_planning_scene" to="/$(arg robot_name)/get_planning_scene" />
 
-    <!-- Start the FRI driver, if requested -->
-    <!-- For DORFL, we don't want to do this, because the controllers should be running on separate computers -->
-<!--     <include if="$(arg driver)" file="$(find iiwa_driver)/launch/iiwa_bringup.launch">
-        <arg name="controller" value="PositionTrajectoryController"/>
-    </include>
- -->
-
-    <!--Put in a namespace to allow many instances to run-->
-    
-
-        <!-- Load move_group -->
-       
-
-
-      <group ns="$(arg robot_name)" >
-      	   <include file="$(find iiwa_moveit)/launch/move_group.launch">
-        <arg name="publish_monitored_planning_scene" value="true" />
-        <arg name="fake_execution" value="false"/>
-        <arg name="hardware_interface" value="$(arg hardware_interface)"/>
-        <arg name="robot_name" value="$(arg robot_name)"/>
-        <arg name="model" value="dorfl" />
-    </include>
-	      
+    <group ns="$(arg robot_name)" >
+        <include file="$(find iiwa_moveit)/launch/move_group.launch">
+            <arg name="publish_monitored_planning_scene" value="true" />
+            <arg name="fake_execution" value="false"/>
+            <arg name="hardware_interface" value="$(arg hardware_interface)"/>
+            <arg name="robot_name" value="$(arg robot_name)"/>
+            <arg name="model" value="dorfl" />
+        </include>
+            
 
         <!-- Run Rviz and load the default config to see the state of the move_group node -->
         <include if="$(arg gui)" file="$(find iiwa_moveit)/launch/moveit_rviz.launch">
@@ -57,20 +43,20 @@
 
         <!-- If database loading was enabled, start mongodb as well -->
         <include file="$(find iiwa_moveit)/launch/default_warehouse_db.launch" if="$(arg db)"/>
-    
 
-    <arg name="source_list" default="[/dorfl/iiwa_left/joint_states, /dorfl/iiwa_right/joint_states ]"/>
+        <arg name="source_list" default="[/dorfl/iiwa_left/joint_states, /dorfl/iiwa_right/joint_states, /dorfl/iiwa_right/sdh_controller/joint_states, /dorfl/iiwa_left/sdh_controller/joint_states, /dorfl/bhand_left/joint_states, /ptu/joint_states ]"/>
 
-     <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
-        <rosparam param="source_list" subst_value="True">$(arg source_list)</rosparam> 
-        <rosparam param="rate">50</rosparam> 
+        <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+            <rosparam param="source_list" subst_value="True">$(arg source_list)</rosparam> 
+            <rosparam param="rate">50</rosparam> 
+            <remap from="/joint_states" to="/dorfl/joint_states" />
+        </node>
 
-     <remap from="/joint_states" to="/dorfl/joint_states" />
- </node>
+        <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
+            respawn="false" output="screen">
+            <remap from="/joint_states" to="/dorfl/joint_states" />
+        </node>
+    </group>
 
-<!--    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
-    respawn="false" output="screen">
-   <remap from="/joint_states" to="/dorfl/iiwa_left/joint_states" />
-  </node> -->
-  </group>
+
 </launch>

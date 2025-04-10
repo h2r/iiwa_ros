@@ -34,5 +34,7 @@
   <param name="robot_description"
       command="$(find xacro)/xacro --inorder '$(find iiwa_description)/urdf/iiwa7.urdf.xacro'
       hardware_interface:=$(arg hardware_interface)
-      robot_name:=$(arg robot_name)" />
+      robot_name:=$(arg robot_name) 
+      origin_xyz:='0.15 0.33 1.35' 
+      origin_rpy:='0 1.57 0'"/>
 </launch>

@@ -12,9 +12,9 @@
     output="screen" ns="/dorfl" args="/dorfl/Left$(arg controller) /dorfl/Right$(arg controller) /dorfl/joint_state_controller"/>
 
   <!-- convert joint states to TF transforms for rviz, etc -->
-<!--   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
     respawn="false" output="screen">
     <remap from="/joint_states" to="/dorfl/joint_states" />
-  </node> -->
+  </node>
 
 </launch>

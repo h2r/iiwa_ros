@@ -40,18 +40,22 @@
       <arg name="controller" value="$(arg controller)"/>
   </include>
 
+  <!-- <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
+      respawn="false" output="screen">
+    </node> -->
+
   <!-- Spawn iiwa FRI driver -->
-  <node pkg="iiwa_driver" type="iiwa_driver" name="iiwa_driver" respawn="false" output="screen">
+  <!-- <node pkg="iiwa_driver" type="iiwa_driver" name="iiwa_driver" respawn="false" output="screen">
     <remap from="/joint_states" to="/dorfl/joint_states"/>
     <remap from="/controller_manager" to="/dorfl/controller_manager"/>
-    <remap from="/commanding_status" to="/dorfl/commanding_status"/>
+    <remap from="/commanding_status" to="/dorfl/commanding_status"/> -->
     <!-- Load configurations from YAML file to parameter server -->
-    <rosparam file="$(find iiwa_driver)/config/dorfl.yaml" command="load"/>
-  </node>
+<!--     <rosparam file="$(find iiwa_driver)/config/dorfl.yaml" command="load"/>
+  </node> -->
 
   <!-- Spawn controller -->
-  <include file="$(find iiwa_control)/launch/dorfl_control.launch">
+<!--   <include file="$(find iiwa_control)/launch/dorfl_control.launch">
     <arg name="controller" value="$(arg controller)"/>
-  </include>
+  </include> -->
 
 </launch>

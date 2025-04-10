@@ -13,6 +13,8 @@
   <!--  Edit  -->
   <!--Import the schunk sdh macro -->
   <xacro:include filename="$(find schunk_description)/urdf/sdh/sdh.urdf.xacro"/>
+    <!--Import the barret hand macro -->
+  <xacro:include filename="$(find bhand_description)/urdf/bh282.urdf.xacro"/>
   <!--  Edit  -->
 
   <!-- Define world -->
@@ -95,13 +97,13 @@
   <joint name="iiwa_left_to_ft_sensor_left" type="fixed">
     <parent link="iiwa_left_link_ee"/>
     <child link="ft_sensor_left"/>
-    <origin xyz="0.0 0.0 0.0635"/> 
+    <origin xyz="0.0 0.0 0.03"/> 
   </joint>
 
   <link name="ft_sensor_left">
     <visual>
       <geometry>
-         <cylinder radius="0.0508" length="0.125"/>
+         <cylinder radius="0.0508" length="0.06"/>
       </geometry>
       <material name="yellow">
         <color rgba="0.75 0.75 0.75 1"/>
@@ -109,7 +111,7 @@
     </visual>
      <collision>
       <geometry>
-         <cylinder radius="0.0508" length="0.125"/>
+         <cylinder radius="0.0508" length="0.06"/>
       </geometry>
     </collision>
   </link>
@@ -129,18 +131,29 @@
   <link name="SchunkRight_link_ee"/>
 
   <!--Here we insert the (left) Schunk SDH2 in the scene -->
-  <xacro:schunk_sdh name="schunk_left" parent="ft_sensor_left">
+  <!-- <xacro:schunk_sdh name="schunk_left" parent="ft_sensor_left">
     <origin xyz="0 0 0.0635" rpy="0 0 -1.8"/>
-  </xacro:schunk_sdh>
+  </xacro:schunk_sdh> !-->
 
   <!-- define SchunkRight_ee_link such that iiwa_ros finds the tool frame -->
-  <joint name="left_ee_fixed" type="fixed">
+  <!-- <joint name="left_ee_fixed" type="fixed">
     <parent link="iiwa_left_link_ee" />
     <child link="SchunkLeft_link_ee"/>
     <origin xyz="0 0 0.134"/>
-  </joint>
+  </joint> -->
 
-  <link name="SchunkLeft_link_ee"/>
+  <!-- <link name="SchunkLeft_link_ee"/> -->
+
+  <xacro:bhand_macro name="bhand_left" parent="iiwa_left_link_ee">
+    <origin xyz="0 0 0.06" rpy="0 0 -2.3"/>
+  </xacro:bhand_macro>
+
+  <!-- <joint name="left_ee_fixed" type="fixed">
+    <parent link="iiwa_left_link_ee" />
+    <child link="bhand_left_link_ee"/>
+    <origin xyz="0 0 0.134"/>
+  </joint>
+  <link name="bhand_left_link_ee"/> -->
 
 <!--   <joint name="iiwa_right_to_schunk_right" type="fixed">
     <parent link="iiwa_right_joint_ee"/>
@@ -176,20 +189,42 @@
   <joint name="torso_to_ptu_base" type="fixed">
     <parent link="torso"/>
     <child link="ptu_base_link"/>
-    <origin xyz="0.11 -0.01 1.54"/>
+    <origin xyz="0.11 -0.01 1.54"/> <!--"0.11 -0.03 1.47" -->
   </joint>
 
   <!-- PTU to SC -->
-  <joint name="ptu_to_sc" type="fixed">
+<!--   <joint name="ptu_to_sc" type="fixed">
     <parent link="ptu_mount_link"/>
     <child link="sc_map"/>
-    <!-- <origin xyz="0.0206375 0.0 0.01905" rpy="-1.570 0 -1.57"/> -->
+ <origin xyz="0.0206375 0.0 0.01905" rpy="-1.570 0 -1.57"/>
     <origin xyz="0.01 0.0 0.0" rpy="-1.570 0 -1.57"/>
   </joint>
 
   <link name="sc_map">
     <origin xyz ="0.0 0.0 0" rpy="0 0 0"/>
-  </link>
+  </link> -->
+
+  <joint name="ptu_to_multisense" type="fixed">
+    <parent link="ptu_mount_link"/>
+    <child link="multisense_origin"/>
+    <!--<origin xyz="0.0206375 0.0 0.01905" rpy="-1.570 0 -1.57"/>-->
+    <origin xyz="0.0 0.0 0.03" rpy="-1.570 0 -1.57"/> <!-- This is hand tuned and not measured, may need to be adjusted-->
+  </joint>
+
+  <link name="multisense_origin">
+    <origin xyz ="0.0 0.0 0" rpy="0 0 0"/>
+  </link> 
+
+  <xacro:include filename="$(find multisense_description)/urdf/multisenseS7/importable.urdf.xacro"/>
+
+
+  <xacro:importable_multisenseS7 name="multisense" parent="multisense_origin">
+    <origin xyz="0 0 0" rpy="1.57 -1.57 0"/>
+  </xacro:importable_multisenseS7>
+<!-- 
+  <link name="multisense_origin">
+    <origin xyz ="0.0 0.0 0" rpy="0 0 0"/>
+  </link> -->
 
 
 <!-- Load Gazebo lib and set the robot namespace -->
