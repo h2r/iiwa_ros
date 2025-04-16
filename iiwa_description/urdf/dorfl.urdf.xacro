@@ -145,7 +145,7 @@
   <!-- <link name="SchunkLeft_link_ee"/> -->
 
   <xacro:bhand_macro name="bhand_left" parent="iiwa_left_link_ee">
-    <origin xyz="0 0 0.031" rpy="0 0 0"/>
+    <origin xyz="0 0 0.031" rpy="0 0 -1.57"/>
   </xacro:bhand_macro>
 
   <!-- <joint name="left_ee_fixed" type="fixed">
