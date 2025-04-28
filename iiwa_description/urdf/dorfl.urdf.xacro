@@ -94,7 +94,7 @@
     </collision>
   </link>
 
-  <joint name="iiwa_left_to_ft_sensor_left" type="fixed">
+ <!-- <joint name="iiwa_left_to_ft_sensor_left" type="fixed">
     <parent link="iiwa_left_link_ee"/>
     <child link="ft_sensor_left"/>
     <origin xyz="0.0 0.0 0.03"/> 
@@ -114,7 +114,7 @@
          <cylinder radius="0.0508" length="0.031"/>
       </geometry>
     </collision>
-  </link>
+  </link> -->
 
   <!--Here we insert the (right) Schunk SDH2 in the scene -->
   <xacro:schunk_sdh name="schunk_right" parent="ft_sensor_right">
@@ -206,23 +206,23 @@
 
   <joint name="ptu_to_multisense" type="fixed">
     <parent link="ptu_mount_link"/>
-    <child link="multisense_origin"/>
+    <child link="multisense/origin"/>
     <!--<origin xyz="0.0206375 0.0 0.01905" rpy="-1.570 0 -1.57"/>-->
     <origin xyz="0.0 0.0 0.03" rpy="-1.570 0 -1.57"/> <!-- This is hand tuned and not measured, may need to be adjusted-->
   </joint>
 
-  <link name="multisense_origin">
+  <link name="multisense/origin">
     <origin xyz ="0.0 0.0 0" rpy="0 0 0"/>
   </link> 
 
   <xacro:include filename="$(find multisense_description)/urdf/multisenseS7/importable.urdf.xacro"/>
 
 
-  <xacro:importable_multisenseS7 name="multisense" parent="multisense_origin">
+  <xacro:importable_multisenseS7 name="multisense" parent="multisense/origin">
     <origin xyz="0 0 0" rpy="1.57 -1.57 0"/>
   </xacro:importable_multisenseS7>
 <!-- 
-  <link name="multisense_origin">
+  <link name="multisense/origin">
     <origin xyz ="0.0 0.0 0" rpy="0 0 0"/>
   </link> -->
 
